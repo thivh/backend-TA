@@ -15,12 +15,12 @@ from nltk.stem import PorterStemmer
 import copy
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-modelName = "indobert-base-p1"
+# modelName = "indobert-base-p1"
 
-# tokenizer = AutoTokenizer.from_pretrained("./indobert-base-p1_tokenizer/")
-# model = AutoModel.from_pretrained("./indobert-base-p1_model/")
-tokenizer = AutoTokenizer.from_pretrained("indobenchmark/indobert-base-p1")
-model = AutoModel.from_pretrained("indobenchmark/indobert-base-p1")
+tokenizer = AutoTokenizer.from_pretrained("./indobert-base-p1_tokenizer/")
+model = AutoModel.from_pretrained("./indobert-base-p1_model/")
+# tokenizer = AutoTokenizer.from_pretrained("indobenchmark/indobert-base-p1")
+# model = AutoModel.from_pretrained("indobenchmark/indobert-base-p1")
 
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
