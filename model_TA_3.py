@@ -124,7 +124,7 @@ def check_similarity(
                 # encode each sentence and append to dictionary
                 new_tokens = tokenizer.encode_plus(
                     sentence,
-                    # max_length=128,
+                    max_length=512,
                     truncation=True,
                     padding="max_length",
                     return_tensors="pt",
