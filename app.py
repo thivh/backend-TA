@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify
-from model_TA import check_similarity
+from model_TA_3 import check_similarity
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'Salam tawa salam bahagia :)'
+    return 'This server is running'
 
 @app.route('/check_sim/', methods=['GET', 'POST'])
 def check():
@@ -18,4 +18,3 @@ def check():
 if __name__ == '__main__':
     app.debug = True
     app.run()
-    app.run(debug = True)

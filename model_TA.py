@@ -1,4 +1,3 @@
-from datetime import datetime
 import re
 import string
 from torch import clamp
@@ -19,8 +18,9 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 tokenizer = AutoTokenizer.from_pretrained("./indobert-base-p1_tokenizer/")
 model = AutoModel.from_pretrained("./indobert-base-p1_model/")
-# tokenizer = AutoTokenizer.from_pretrained("indobenchmark/indobert-base-p1")
-# model = AutoModel.from_pretrained("indobenchmark/indobert-base-p1")
+
+# tokenizer = AutoTokenizer.from_pretrained("./xlm-roberta-large_tokenizer/")
+# model = AutoModel.from_pretrained("./xlm-roberta-large_model/")
 
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
@@ -114,7 +114,7 @@ def check_similarity(
                     i
                 ].strip()  # remove leading and trailing whitespace
                 sentences[i] = re.sub(r"\s+", " ", sentences[i])  # remove extra space
-            print(sentences)
+            # print(sentences)
 
             # initialize dictionary to store tokenized sentences
             tokens = {"input_ids": [], "attention_mask": []}
@@ -123,7 +123,7 @@ def check_similarity(
                 # encode each sentence and append to dictionary
                 new_tokens = tokenizer.encode_plus(
                     sentence,
-                    max_length=128,
+                    # max_length=128,
                     truncation=True,
                     padding="max_length",
                     return_tensors="pt",
@@ -137,20 +137,12 @@ def check_similarity(
             outputs = model(**tokens)
             embeddings = outputs.last_hidden_state
             attention_mask = tokens["attention_mask"]
-            attention_mask.shape
             mask = attention_mask.unsqueeze(-1).expand(embeddings.size()).float()
-            mask.shape
-            mask
             masked_embeddings = embeddings * mask
-            masked_embeddings.shape
-            masked_embeddings
             summed = torch.sum(masked_embeddings, 1)
-            summed.shape
             summed_mask = torch.clamp(mask.sum(1), min=1e-9)
-            summed_mask.shape
-            summed_mask
             mean_pooled = summed / summed_mask
-            mean_pooled
+
             # convert from PyTorch tensor to numpy array
             mean_pooled = mean_pooled.detach().numpy()
 
@@ -168,8 +160,7 @@ def check_similarity(
             else:
                 result = sum(x[-knn:]) / len(x[-knn:])
             # print(result)
-            kamus2[word3][word4] = result
+            kamus2[word3][word4] = round(result,3)
     return kamus2
-
 
 # res = check_similarity(teks, kamus)
